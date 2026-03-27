@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #2563eb, #9333ea);
+    color: #f1f5f9;
+    text-align: center;
+}
+
+header {
+    padding: 80px 20px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    transition: background 0.4s ease;
+    z-index: 100;
+}
+
+header.scrolled {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #60a5fa, #3b82f6, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    font-size: 20px;
+    color: #e0e7ff;
+}
+
+section {
+    padding: 60px 20px;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.08);
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.project {
+    margin: 10px 0;
+}
+
+input, textarea {
+    width: 80%;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+button {
+    padding: 14px 35px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #60a5fa, #3b82f6);
+    color: white;
+    cursor: pointer;
+}
