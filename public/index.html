@@ -102,7 +102,7 @@ I aim to grow as a developer and contribute to innovative tech solutions.</p>
 <footer>© 2026 Harshitha Portfolio</footer>
 
 <script>
-const backendURL = "https://mini-project-eg7j-1ue5f0lwc-harshitham2030-creates-projects.vercel.app/api/contacts";
+const backendURL = "https://mini-project-eg7j.vercel.app/api/message";
 
 document.getElementById("contactForm").addEventListener("submit", async e => {
     e.preventDefault();
@@ -119,7 +119,7 @@ document.getElementById("contactForm").addEventListener("submit", async e => {
     if(messageVal===""){messageError.textContent="Message required"; ok=false;}
     if(ok){
         try{
-            let res = await fetch( "https://mini-project-eg7j-1ue5f0lwc-harshitham2030-creates-projects.vercel.app/api/contacts", {
+            let res = await fetch( "https://mini-project-eg7j.vercel.app/api/message", {
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify({ name:nameVal, email:emailVal, message:messageVal })
