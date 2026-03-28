@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // ------------------------
-// MongoDB Connection (cached for serverless)
+// MongoDB Connection (FIXED)
 // ------------------------
 let cached = global.mongoose;
 if (!cached) cached = global.mongoose = { conn: null, promise: null };
@@ -25,10 +25,9 @@ async function dbConnect() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then(m => m);
+    // ✅ FIX: Removed old options
+    cached.promise = mongoose.connect(process.env.MONGO_URI)
+      .then(m => m);
   }
 
   cached.conn = await cached.promise;
@@ -36,7 +35,7 @@ async function dbConnect() {
 }
 
 // ------------------------
-// Counter Schema (to track total messages)
+// Counter Schema
 // ------------------------
 const counterSchema = new mongoose.Schema({
   name: String,
@@ -93,65 +92,20 @@ app.get("/api/contacts", async (req, res) => {
   }
 });
 
-// UPDATE a contact by ID
-app.put("/api/contacts/:id", async (req, res) => {
-  try {
-    await dbConnect();
-    const updated = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ success: false, error: "Contact not found" });
-    res.json({ success: true, data: updated });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// DELETE a contact by ID
+// DELETE a contact
 app.delete("/api/contacts/:id", async (req, res) => {
   try {
     await dbConnect();
-    const deleted = await Contact.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ success: false, error: "Contact not found" });
-    res.json({ success: true, message: "Deleted successfully" });
+    await Contact.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// CREATE a message and increment counter
-app.post("/api/messages", async (req, res) => {
-  try {
-    await dbConnect();
-    const msg = new Message(req.body);
-    await msg.save();
-
-    // Increment total message counter
-    let counter = await Counter.findOne({ name: "totalMessages" });
-    if (!counter) {
-      counter = new Counter({ name: "totalMessages", count: 1 });
-    } else {
-      counter.count += 1;
-    }
-    await counter.save();
-
-    res.status(200).json({ success: true, message: "Message saved", totalMessages: counter.count });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// READ all messages
-app.get("/api/messages", async (req, res) => {
-  try {
-    await dbConnect();
-    const data = await Message.find().sort({ date: -1 });
-    res.json({ success: true, data });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Serve frontend for all other routes
+// ------------------------
+// Serve frontend
+// ------------------------
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
