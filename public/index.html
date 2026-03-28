@@ -102,7 +102,7 @@ I aim to grow as a developer and contribute to innovative tech solutions.</p>
 <footer>© 2026 Harshitha Portfolio</footer>
 
 <script>
-const backendURL = "https://mini-project-9vnt.onrender.com";
+const backendURL = "https://mini-project-9vnt.onrender.com/api/contacts";
 
 document.getElementById("contactForm").addEventListener("submit", async e => {
     e.preventDefault();
@@ -119,14 +119,14 @@ document.getElementById("contactForm").addEventListener("submit", async e => {
     if(messageVal===""){messageError.textContent="Message required"; ok=false;}
     if(ok){
         try{
-            let res = await fetch( "https://mini-project-9vnt.onrender.com", {
+            let res = await fetch( "https://mini-project-9vnt.onrender.com/api/contacts", {
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify({ name:nameVal, email:emailVal, message:messageVal })
             });
             if(res.ok){ showSuccessMessage(); document.getElementById("contactForm").reset(); loadMessages(); }
             else alert("Error saving message");
-        }catch(err){ alert("Server error — backend not reachable"); }
+        }catch(err){ alert("Server is waking up... please wait 15 seconds and try again"); }
     }
 });
 
